@@ -17,8 +17,8 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+url = input("URL: ")
 def menus():
-    url = 'http://100procenthardcore.nl/'
     try:
         source_code = requests.get(url)
         plain_text = source_code.text

@@ -2,6 +2,7 @@
 import requests
 import re
 import sys
+import crowley
 from bs4 import BeautifulSoup
 """Works with 100% Hardcore!"""
 
@@ -18,15 +19,26 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 url = input("URL: ")
-def menus():
+
+def emails():
     try:
-        source_code = requests.get(url)
-        plain_text = source_code.text
-        soup = BeautifulSoup(plain_text, "lxml")
+        soup = crowley.crawlsite(url)
+        for email in soup.find_all('span', srting=True):
+            a = re.findall(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", email)
+            print(a)
+
+    except KeyboardInterrupt:
+        sys.exit("EXIT")
+
+
+emails()
+
+def categorys():
+    try:
+        soup = crowley.crawlsite(url)
         categorys = []
         categorytitle = []
-        #for link in soup.find_all('ul', {'class': 'children'}):
-        for link in soup.find_all('ul', {'class': 'product-categories'}):
+        for link in soup.find_all('p', {'class': 'x'}):
             category = soup.find_all('a')
             for a in link.find_all('a'):
                 link = a.get('href')
@@ -40,7 +52,8 @@ def menus():
 
     except KeyboardInterrupt:
         sys.exit("EXIT")
-
+#categorys()
+"""
 def crawl(url):
     try:
         page = 1
@@ -80,3 +93,4 @@ def product_info(url):
 
 menus()
 #crawl(1)
+"""

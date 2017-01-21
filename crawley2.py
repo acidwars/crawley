@@ -2,6 +2,7 @@
 import requests
 import re
 import sys
+import crowley
 from bs4 import BeautifulSoup
 """Works with 100% Hardcore!"""
 
@@ -20,9 +21,7 @@ class bcolors:
 def menus():
     url = 'http://100procenthardcore.nl/'
     try:
-        source_code = requests.get(url)
-        plain_text = source_code.text
-        soup = BeautifulSoup(plain_text, "lxml")
+        soup = crowley.crawlsite(url)
         categorys = []
         categorytitle = []
         #for link in soup.find_all('ul', {'class': 'children'}):
@@ -45,9 +44,9 @@ def crawl(url):
     try:
         page = 1
         item = 0
-        source_code = requests.get(url)
-        plain_text = source_code.text
-        soup = BeautifulSoup(plain_text, "lxml")
+#        source_code = requests.get(url)
+#        plain_text = source_code.text
+        soup = crowley.crawlsite(url)
         for link in soup.findAll('a', {'class': 'product-title-link'}):
             itemlist = []
             href = link.get('href')
@@ -64,9 +63,7 @@ def crawl(url):
         sys.exit("EXIT")
 
 def product_info(url):
-    source_code = requests.get(url)
-    plain_text = source_code.text
-    soup = BeautifulSoup(plain_text, "lxml")
+    soup = crowley.crawlsite(url)
     for price in soup.findAll('div', {'class': 'product_infos'}):
         price = soup.find_all('meta', attrs={"itemprop":"price"})
     for value in price:
